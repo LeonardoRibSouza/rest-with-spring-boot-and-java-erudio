@@ -12,58 +12,77 @@ import org.springframework.web.bind.annotation.RestController;
 public class MathController {
 
 
-    Verification verification  = new Verification();
+    Verification verification = new Verification();
     ConversaoUtil conversaoUtil = new ConversaoUtil();
 
-    //localhost/Math/sun/1/2
-    @RequestMapping("/sun/{numberOne}/{numberTwo}")
-    public Double sun(
-            @PathVariable ("numberOne") String numberOne,
-            @PathVariable ("numberTwo") String numberTwo
+    //localhost/math/sum/1/2
+    @RequestMapping("/sum/{numberOne}/{numberTwo}")
+    public Double sum(
+            @PathVariable("numberOne") String numberOne,
+            @PathVariable("numberTwo") String numberTwo
     ) throws Exception {
-        if (!verification.isNumeric(numberOne) || !verification.isNumeric(numberTwo)) throw new UnsupportedMathOperationExeception("Invalid character, please re-enter");
+        if (!verification.isNumeric(numberOne) || !verification.isNumeric(numberTwo)) {
+            throw new UnsupportedMathOperationExeception("Invalid character, please re-enter");
+        }
         return conversaoUtil.convertToDouble(numberOne) + conversaoUtil.convertToDouble(numberTwo);
     }
 
-    //localhost/Math/sub/1/2
-    @RequestMapping("/sub/{numberOne}/{numberTwo}")
-    public Double sub (@PathVariable ("numberOne") String numberOne,
-                       @PathVariable ("numberTwo") String numberTwo){
-        if (!verification.isNumeric(numberOne) || !verification.isNumeric(numberTwo)) throw new UnsupportedMathOperationExeception("Invalid character, please re-enter");
+    //localhost/math/subtraction/1/2
+    @RequestMapping("/subtraction/{numberOne}/{numberTwo}")
+    public Double subtraction(@PathVariable("numberOne") String numberOne,
+                              @PathVariable("numberTwo") String numberTwo) {
+        if (!verification.isNumeric(numberOne) || !verification.isNumeric(numberTwo)) {
+            throw new UnsupportedMathOperationExeception("Invalid character, please re-enter");
+        }
         return conversaoUtil.convertToDouble(numberOne) - conversaoUtil.convertToDouble(numberTwo);
     }
 
-    //localhost/Math/sub/1/2
-    @RequestMapping("/mul/{numberOne}/{numberTwo}")
-    public Double mul (@PathVariable("numberOne") String numberOne,
-                       @PathVariable ("numberTwo") String numberTwo){
-        if (!verification.isNumeric(numberOne) || !verification.isNumeric(numberTwo)) throw new UnsupportedMathOperationExeception("Invalid character, please");
+    //localhost/math/multiplication/1/2
+    @RequestMapping("/multiplication/{numberOne}/{numberTwo}")
+    public Double multiplication(@PathVariable("numberOne") String numberOne,
+                                 @PathVariable("numberTwo") String numberTwo) {
+        if (!verification.isNumeric(numberOne) || !verification.isNumeric(numberTwo)) {
+            throw new UnsupportedMathOperationExeception("Invalid character, please re-enter");
+        }
         return conversaoUtil.convertToDouble(numberOne) * conversaoUtil.convertToDouble(numberTwo);
     }
 
-    //localhost/Math/div/3/3
-    @RequestMapping("/div/{numberOne}/{numberTwo}")
-    public Double div (@PathVariable("numberOne") String numberOne,
-                       @PathVariable ("numberTwo") String numberTwo){
-        if (!verification.isNumeric(numberOne) || !verification.isNumeric(numberTwo)) throw new UnsupportedMathOperationExeception("Invalid character, please");
+    //localhost/math/division/3/3
+    @RequestMapping("/division/{numberOne}/{numberTwo}")
+    public Double division(@PathVariable("numberOne") String numberOne,
+                           @PathVariable("numberTwo") String numberTwo) {
+        if (!verification.isNumeric(numberOne) || !verification.isNumeric(numberTwo)) {
+            throw new UnsupportedMathOperationExeception("Invalid character, please re-enter");
+        }
         return conversaoUtil.convertToDouble(numberOne) / conversaoUtil.convertToDouble(numberTwo);
     }
 
-    //localhost/math/med/3/3
-    @RequestMapping("/med/{numberOne}/{numberTwo}")
-    public Double med (@PathVariable("numberOne")String numberOne,
-                       @PathVariable ("numberTwo")String numberTwo){
-        if (!verification.isNumeric(numberOne)|| !verification.isNumeric(numberTwo)) throw new UnsupportedMathOperationExeception("Invalid character, please");
-        return (conversaoUtil.convertToDouble(numberOne) + conversaoUtil.convertToDouble(numberTwo))/2;
+    //localhost/math/average/3/3
+    @RequestMapping("/average/{numberOne}/{numberTwo}")
+    public Double average(@PathVariable("numberOne") String numberOne,
+                          @PathVariable("numberTwo") String numberTwo) {
+        if (!verification.isNumeric(numberOne) || !verification.isNumeric(numberTwo)) {
+            throw new UnsupportedMathOperationExeception("Invalid character, please re-enter");
+        }
+        return (conversaoUtil.convertToDouble(numberOne) + conversaoUtil.convertToDouble(numberTwo)) / 2;
     }
 
-    @RequestMapping("/raiz/{numberOne}")
-    public Double raiz (@PathVariable("numberOne") String numberOne){
-        if (!verification.isNumeric(numberOne)) throw new UnsupportedMathOperationExeception("Invalid character, please");
+    //localhost/math/squareroot/average/3/3
+    @RequestMapping("/squareroot/{numberOne}")
+    public Double squareRoot(@PathVariable("numberOne") String numberOne) {
+        if (!verification.isNumeric(numberOne)) {
+            throw new UnsupportedMathOperationExeception("Invalid character, please re-enter");
+        }
         Double i = 1.0;
-        while (true){
+        while (true) {
             if (i * i == conversaoUtil.convertToDouble(numberOne)) return i;
             i++;
+            if (i > conversaoUtil.convertToDouble(numberOne)) {
+                return 0.0;
+            }
+
+
+
         }
     }
 
