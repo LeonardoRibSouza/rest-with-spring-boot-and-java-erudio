@@ -1,1 +1,1 @@
-# rest-with-spring-boot-and-java-erudio
+Tudo que está sendo armazenado aqui serão praticas das minhas aulas de Api RESTful com Spring Boot
