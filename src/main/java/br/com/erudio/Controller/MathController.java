@@ -1,6 +1,6 @@
 package br.com.erudio.Controller;
 
-import br.com.erudio.exeception.UnsupportedMathOperationExeception;
+import br.com.erudio.exeception.ResourceNotFoundException;
 import br.com.erudio.util.ConversaoUtil;
 import br.com.erudio.util.Verification;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +22,7 @@ public class MathController {
             @PathVariable("numberTwo") String numberTwo
     ) throws Exception {
         if (!verification.isNumeric(numberOne) || !verification.isNumeric(numberTwo)) {
-            throw new UnsupportedMathOperationExeception("Invalid character, please re-enter");
+            throw new ResourceNotFoundException("Invalid character, please re-enter");
         }
         return conversaoUtil.convertToDouble(numberOne) + conversaoUtil.convertToDouble(numberTwo);
     }
@@ -32,7 +32,7 @@ public class MathController {
     public Double subtraction(@PathVariable("numberOne") String numberOne,
                               @PathVariable("numberTwo") String numberTwo) {
         if (!verification.isNumeric(numberOne) || !verification.isNumeric(numberTwo)) {
-            throw new UnsupportedMathOperationExeception("Invalid character, please re-enter");
+            throw new ResourceNotFoundException("Invalid character, please re-enter");
         }
         return conversaoUtil.convertToDouble(numberOne) - conversaoUtil.convertToDouble(numberTwo);
     }
@@ -42,7 +42,7 @@ public class MathController {
     public Double multiplication(@PathVariable("numberOne") String numberOne,
                                  @PathVariable("numberTwo") String numberTwo) {
         if (!verification.isNumeric(numberOne) || !verification.isNumeric(numberTwo)) {
-            throw new UnsupportedMathOperationExeception("Invalid character, please re-enter");
+            throw new ResourceNotFoundException("Invalid character, please re-enter");
         }
         return conversaoUtil.convertToDouble(numberOne) * conversaoUtil.convertToDouble(numberTwo);
     }
@@ -52,7 +52,7 @@ public class MathController {
     public Double division(@PathVariable("numberOne") String numberOne,
                            @PathVariable("numberTwo") String numberTwo) {
         if (!verification.isNumeric(numberOne) || !verification.isNumeric(numberTwo)) {
-            throw new UnsupportedMathOperationExeception("Invalid character, please re-enter");
+            throw new ResourceNotFoundException("Invalid character, please re-enter");
         }
         return conversaoUtil.convertToDouble(numberOne) / conversaoUtil.convertToDouble(numberTwo);
     }
@@ -62,7 +62,7 @@ public class MathController {
     public Double average(@PathVariable("numberOne") String numberOne,
                           @PathVariable("numberTwo") String numberTwo) {
         if (!verification.isNumeric(numberOne) || !verification.isNumeric(numberTwo)) {
-            throw new UnsupportedMathOperationExeception("Invalid character, please re-enter");
+            throw new ResourceNotFoundException("Invalid character, please re-enter");
         }
         return (conversaoUtil.convertToDouble(numberOne) + conversaoUtil.convertToDouble(numberTwo)) / 2;
     }
@@ -71,7 +71,7 @@ public class MathController {
     @RequestMapping("/squareroot/{numberOne}")
     public Double squareRoot(@PathVariable("numberOne") String numberOne) {
         if (!verification.isNumeric(numberOne)) {
-            throw new UnsupportedMathOperationExeception("Invalid character, please re-enter");
+            throw new ResourceNotFoundException("Invalid character, please re-enter");
         }
         Double i = 1.0;
         while (true) {

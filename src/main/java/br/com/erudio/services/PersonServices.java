@@ -1,6 +1,12 @@
 package br.com.erudio.services;
 
+import br.com.erudio.data.dto.v1.PersonDTOV1;
+import br.com.erudio.data.dto.v2.PersonDTOV2;
+import br.com.erudio.exeception.ResourceNotFoundException;
+import br.com.erudio.mapper.custom.PersonMapper;
 import br.com.erudio.model.Person;
+import br.com.erudio.repository.PersonRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -8,63 +14,72 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
+import static br.com.erudio.mapper.ObjectMapper.parseObject;
+import static br.com.erudio.mapper.ObjectMapper.parseListObjects;
 
 @Service
 public class PersonServices {
 
     private final AtomicLong counter= new AtomicLong();
+
+    @Autowired
+    PersonRepository repository;
+    @Autowired
+    PersonMapper convert;
+
     private Logger logger = Logger.getLogger(PersonServices.class.getName());
 
-    public List<Person> findAll(){
+    public List<PersonDTOV1> findAll(){
         logger.info("FindAll one Person!");
-        List<Person>  persons = new ArrayList<Person>();
+        List<PersonDTOV1>  persons = new ArrayList<PersonDTOV1>();
 
-        for(int i =0; i<8; i++){
-            Person person = mockPerson(i);
-            persons.add(person);
-        }
+        return parseListObjects(repository.findAll(), PersonDTOV1.class);
 
-        return persons;
     }
 
-    public Person findById(String id){
+    public PersonDTOV1 findById(Long id){
         logger.info("Finding one Person!");
 
-        Person person = new Person();
-        person.setId(counter.incrementAndGet());
-        person.setFirstName("Leonardo");
-        person.setLastName("Ribeiro");
-        person.setAddress("Vitoria da Conquista -BA");
-        person.setGender("Male");
+        var entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("No record found with id "));
 
-        return person;
+         return parseObject(entity, PersonDTOV1.class);
     }
 
-    private Person mockPerson(int i){
+    public PersonDTOV1 create(@RequestBody PersonDTOV1 person){
+        logger.info("Create one PersonV1!");
 
+        var entity = parseObject(person, Person.class);
 
-        Person person = new Person();
-        person.setId(counter.incrementAndGet());
-        person.setFirstName("Firstname"+i);
-        person.setLastName("Lastname"+i);
-        person.setAddress("Some address"+i);
-        person.setGender("Male");
+        return parseObject(repository.save(entity), PersonDTOV1.class);
 
-        return person;
     }
 
-    public Person create(@RequestBody Person person){
-        logger.info("Create one Person!");
-        return person;
-    }
-
-    public Person update(Person person){
+    public PersonDTOV1 update(PersonDTOV1 person){
         logger.info("Update one Person!");
-        return person;
+        var entity = repository.findById(person.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("No record found with id "));
+
+        entity.setFirstName(person.getFirstName());
+        entity.setLastName(person.getLastName());
+        entity.setAddress(person.getAddress());
+        entity.setGender(person.getGender());
+
+        return parseObject(repository.save(entity), PersonDTOV1.class);
+
     }
 
-    public void delete(String id){
+    public void delete(Long id){
         logger.info("Delete one Person!");
+        Person entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("No record found with id "));
+        repository.delete(entity);
     }
 
+    public PersonDTOV2 createV2(PersonDTOV2 person) {
+        logger.info("Create one PersonV2!");
+
+        var entity = convert.convertDTOToEntity(person);
+        return convert.convertEntityToDTO(repository.save(entity));
+    }
 }
